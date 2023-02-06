@@ -1,45 +1,57 @@
-// In App.js in a new project
-
-import { useEffect, useRef } from 'react';
-import { Animated } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, GestureResponderEvent, TouchableOpacity } from 'react-native';
 
 interface ThumbnailProps {
-  uri: string,
+  imageId: string,
   height: number,
   width: number,
-  index: number,
+  onPress?: (event: GestureResponderEvent) => void,
 }
 
 const Thumbnail = ({
-  uri,
+  imageId,
   height,
   width,
-  index,
+  onPress,
 }: ThumbnailProps) => {
   const scaleValue = useRef(new Animated.Value(0)).current;
+  const [isImageReady, setIsImageReady] = useState(false);
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    if (isImageReady) {
       Animated.spring(scaleValue, {
         toValue: 1,
         useNativeDriver: true,
         speed: 50
       }).start();
-    }, 100 * index)
-
-    return () => clearTimeout(timeout);
-  }, [])
-  return (
+    }
+  }, [isImageReady]);
+  
+  const renderImage = () => (
     <Animated.Image 
-      source={{ uri }}
+      source={{ uri: `https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg` }}
+      onLoadEnd={() => setIsImageReady(true)}
       style={{
         height,
         width,
         transform: [
           { scale: scaleValue }
         ],
-        resizeMode: "cover",
       }}
     />
+  )
+
+  return (
+    <>
+    {
+      onPress ? (
+        <TouchableOpacity onPress={onPress}>
+          {renderImage()}
+        </TouchableOpacity>
+      )
+      : renderImage()
+    }
+    </>
+
   );
 };
 
