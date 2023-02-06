@@ -21,3 +21,6 @@ For this project I used expo, react-navigation and redux (redux-toolkit).
 /components: Reusable components, they should be display information with given props, should contain as less logic as possible if not 0.
 /slices: Contains RTK slices and Apis (createApi) check RTK docs for reference. Basically all redux boilerplate is here, way less code is used thanks to RTK.
 
+## Demo
+https://user-images.githubusercontent.com/18222983/216918998-017e7e1f-c441-4bfa-acaa-1e024211d24e.mov
+
